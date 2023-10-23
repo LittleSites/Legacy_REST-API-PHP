@@ -1,0 +1,35 @@
+CREATE DATABASE littlesites_db CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+
+CREATE TABLE Usuario (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombres VARCHAR(255) NOT NULL,
+    apellido_p VARCHAR(255) NOT NULL,
+    apellido_m VARCHAR(255) NOT NULL,
+    correo VARCHAR(255) NOT NULL,
+    contrasena VARCHAR(255) NOT NULL, -- Use VARBINARY to store encrypted passwords
+    telefono VARCHAR(25),
+    ciudad VARCHAR(255) NOT NULL,
+    codigo_postal VARCHAR(20) NOT NULL,
+    pais VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Organizacion (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    contrasena VARBINARY(255) NOT NULL,
+    nombre_organizacion VARCHAR(255) NOT NULL,
+    tipo VARCHAR(255) NOT NULL,
+    responsable INT NOT NULL,
+    ciudad VARCHAR(255) NOT NULL,
+    pais VARCHAR(255) NOT NULL,
+    codigo_postal VARCHAR(20) NOT NULL,
+    locacion VARCHAR(255),
+    pagina INT NOT NULL
+);
+
+CREATE TABLE Pagina (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    direccion VARCHAR(255) NOT NULL
+);
+
+ALTER TABLE Organizacion ADD FOREIGN KEY (responsable) REFERENCES Usuario(id);
+ALTER TABLE Organizacion ADD FOREIGN KEY (pagina) REFERENCES Pagina(id);

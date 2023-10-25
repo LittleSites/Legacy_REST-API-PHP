@@ -150,7 +150,8 @@ function verifyPassword($response) {
 }
 
 
-function handleUpdate($response) {
+function handleUpdate($json) {
+    $response = handleJson($json, ['table', 'data', 'where']);//get the table name and the data array
     $tableName = $response['table'];
     $dataArray = $response['data'];
     $where = $response['where'];
@@ -159,10 +160,11 @@ function handleUpdate($response) {
     foreach ($dataArray as $column => $value) {//for each column and value
         $updateColumns[] = "$column = '$value'";//add the column and value to the array
     }
-
     $setClause = implode(", ", $updateColumns);//separate the columns and values with a comma
 
-    $sql = "UPDATE $tableName SET $setClause WHERE $where";//create the sql query
+    $whereClause = (is_array($where)) ? implode(' AND ', $where) : $where;//if the where condition is an array, implode it with 'AND'
+
+    $sql = "UPDATE $tableName SET $setClause WHERE $whereClause";//create the sql query
 
     return exeQuery($sql);
 }

@@ -52,11 +52,14 @@
                     "contrasena" => $credentials->contrasena
                 ));
 
+
                 $response = $result;
                 break;
             case 'uploadTemplate':
                 $id = $JsonQuery->id;
                 $template = $JsonQuery->template;
+
+                
 
                 $result = handleUpdate(array(
                     "table" => "organizacion",

@@ -1,5 +1,5 @@
 <?php
-require_once("queries.php"); // Reemplaza "tu_archivo.php" con el nombre de tu archivo que contiene las funciones
+/*require_once("queries.php"); // Reemplaza "tu_archivo.php" con el nombre de tu archivo que contiene las funciones
 
 // Prueba de handleInsertion
 $jsonInsert = '{
@@ -59,6 +59,16 @@ if (handleDelete($jsonDelete)) {
     echo "Prueba de eliminación PASADA.\n";
 } else {
     echo "Prueba de eliminación FALLIDA.\n";
+}*/
+
+$where = array(
+    "username" => "nestor",
+    "password" => "hola"
+);
+
+foreach ($where as $key => $value) {
+    $query = $query . "AND" . $key . "=" . "'$'"
+    echo $key;
 }
 
 ?>

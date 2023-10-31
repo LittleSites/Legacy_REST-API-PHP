@@ -86,7 +86,7 @@ function handleInsertion($response) {
 
     if ($result) {
         return array(
-            "result" => "succes",
+            "result" => "success",
             "message" => "Insercion completada correctamente"
         );
     }
@@ -132,7 +132,7 @@ function verifyPassword($response) {
         $hashedPassword = $row['contrasena'];
         if (password_verify($providedPassword, $hashedPassword)) {
             return array(
-                "result" => "succes",
+                "result" => "success",
                 "message" => "Credenciales verificadas correctamente"
             );
         }else{
@@ -179,7 +179,7 @@ function handleDelete($response) {
 
     if($result){
         return array(
-            "result" => "succes",
+            "result" => "success",
             "message" => "Eliminacion completada exitosamente"
         );
     }

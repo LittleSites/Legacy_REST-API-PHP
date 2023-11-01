@@ -85,7 +85,7 @@
         echo json_encode($response);
     } else {
         // Si no es una solicitud POST, devolver un error
-        header("HTTP/1.1 405 Method Not Allowed");
+        header("Content-Type: application/json");
         echo json_encode(array("mensaje" => "Método no permitido"));
     }
 

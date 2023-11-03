@@ -61,14 +61,72 @@ if (handleDelete($jsonDelete)) {
     echo "Prueba de eliminación FALLIDA.\n";
 }*/
 
-$where = array(
-    "username" => "nestor",
-    "password" => "hola"
+require("./queries.php");
+
+$dic = array(
+    "table" => "organizacion",
+    "where" => array(
+        "id" => 2
+    ),
+    "data" => array(
+        "template" => json_encode(array(
+            "columna1" => "valor1",
+            "columna2" => "valor2",
+            "columna3" => "valor3",
+        ))
+    )
 );
 
-foreach ($where as $key => $value) {
-    $query = $query . "AND" . $key . "=" . "'$'"
-    echo $key;
+$result = handleUpdate($dic);
+
+echo "<br><br>";
+print_r($result);
+echo "<br><br>";
+
+$dic = array(
+    "table" => "organizacion",
+    "where" => array(
+        "id" => 2
+    ),
+    "select" => array("template")
+);
+
+$result = handleSelection($dic);
+
+$var = json_decode($result[0]["template"]);
+
+echo "<br><br>";
+print_r($var->columna1);
+echo "<br><br>";
+
+$dic = array(
+    "table" => "usuario",
+    "select" => array("id"),
+    "where" => array(
+        "id" => 4,
+        "correo" => "hoa"
+    )
+);
+
+/*$result = handleSelection($dic);
+
+echo "<br><br>";
+print_r($result[0]);
+echo "<br><br>";*/
+
+$sql = "WHERE ";
+foreach ($dic["where"] as $key => $value) {
+    if(is_string($value)){
+        $sql = $sql."$key = '$value'";
+    }else{
+        $sql = $sql."$key = $value";
+    }
+    if($key != array_key_last($dic["where"])){
+        $sql = $sql." AND ";
+    }
 }
+
+echo $sql;
+
 
 ?>

@@ -25,58 +25,68 @@
             case 'registerUser':
                 $credentials = $JsonQuery->credentials;
 
-                $result = handleInsertion(array(
+                $response = handleInsertion(array(
                     "table" => "usuario",
                     "type" => "registry",
-                    "data" => array(
-                        "nombres" => $credentials->nombres,
-                        "apellido_p" => $credentials->apellido_p,
-                        "apellido_m" => $credentials->apellido_m,
-                        "correo" => $credentials->correo,
-                        "contrasena" => $credentials->contrasena,
-                        "telefono" => $credentials->telefono,
-                        "ciudad" => $credentials->ciudad,
-                        "codigo_postal" => $credentials->codigo_postal,
-                        "pais" => $credentials->pais
-                    )
+                    "data" => $credentials
                 ));
-
-                $response = $result;
                 break;
             case 'loginUser':
                 $credentials = $JsonQuery->credentials;
                 
-                $result = verifyPassword(array(
+                $response = verifyPassword(array(
                     "table" => "usuario",
                     "correo" => $credentials->correo,
                     "contrasena" => $credentials->contrasena
                 ));
-
-
-                $response = $result;
                 break;
             case 'uploadTemplate':
-                $id = $JsonQuery->id;
+                $id = $JsonQuery->organization;
                 $template = $JsonQuery->template;
 
-                
-
-                $result = handleUpdate(array(
+                $response = handleUpdate(array(
                     "table" => "organizacion",
                     "data" => array(
-                        "pagina" => $template
+                        "template" => json_encode($template)
                     ),
                     "where" => array(
                         "id" => $id
                     )
                 ));
+                break;
+            case 'getTemplate':
+                $id = $JsonQuery->organization;
+                
+                $data = handleSelection(array(
+                    "table" => "organizacion",
+                    "select" => array("template", "ciudad", "pais"),
+                    "where" => array(
+                        "id" => $id
+                    )
+                ));
 
-                $response = $result;
+                $response = array(
+                    "result" => "success",
+                    "template" => json_decode($data[0]["template"], true)
+                );
+
+                break;
+            case 'getUser':
+                $userType = $JsonQuery->userType;
+                $select = $JsonQuery->select ?? "";
+                $where = $JsonQuery->where ?? "";
+                $limit = $JsonQuery->limit ?? "";
+
+                $data = handleSelection(array(
+                    "table" => $userType,
+                    "select" => $select,
+                    "where" => $where,
+                    "limit" => $limit
+                ));
+                
                 break;
             default:
-                $response = array(
-                    "result" => "No hay query"
-                );
+                return errorResponse("La query no se encuentra entre los tipos de query validas");
                 break;
         }
 
@@ -85,8 +95,7 @@
         echo json_encode($response);
     } else {
         // Si no es una solicitud POST, devolver un error
-        header("Content-Type: application/json");
-        echo json_encode(array("mensaje" => "Método no permitido"));
+        errorResponse("Metodo no permitido");
     }
 
     function errorResponse($errorMessage){

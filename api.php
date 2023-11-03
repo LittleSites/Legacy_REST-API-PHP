@@ -28,7 +28,17 @@
                 $response = handleInsertion(array(
                     "table" => "usuario",
                     "type" => "registry",
-                    "data" => $credentials
+                    "data" => array(
+                        "nombres" => $credentials->nombres,
+                        "apellido_p" => $credentials->apellido_p,
+                        "apellido_m" => $credentials->apellido_m,
+                        "correo" => $credentials->correo,
+                        "contrasena" => $credentials->contrasena,
+                        "telefono" => $credentials->telefono,
+                        "ciudad" => $credentials->ciudad,
+                        "codigo_postal" => $credentials->codigo_postal,
+                        "pais" => $credentials->pais
+                    )
                 ));
                 break;
             case 'loginUser':

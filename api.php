@@ -28,7 +28,7 @@
                 $response = handleInsertion(array(
                     "table" => "usuario",
                     "type" => "registry",
-                    "data" => json_decode($credentials)
+                    "data" => $credentials
                 ));
                 break;
             case 'loginUser':
@@ -36,8 +36,8 @@
                 
                 $response = verifyPassword(array(
                     "table" => "usuario",
-                    "correo" => $credentials->correo,
-                    "contrasena" => $credentials->contrasena
+                    "correo" => $credentials["correo"],
+                    "contrasena" => $credentials["contrasena"]
                 ));
                 break;
             case 'uploadTemplate':
@@ -91,7 +91,7 @@
                 
                 break;
             default:
-                return errorResponse("La query no se encuentra entre los tipos de query validas");
+                return errorResponse("La query no se encuentra entre los tipos de query validas ERROR-2");
                 break;
         }
 

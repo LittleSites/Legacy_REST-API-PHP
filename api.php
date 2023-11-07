@@ -96,7 +96,7 @@
                 
                 break;
             default:
-                return errorResponse("La query no se encuentra entre los tipos de query validas");
+                return errorResponse("La query no se encuentra entre los tipos de query validas ERROR-2");
                 break;
         }
 

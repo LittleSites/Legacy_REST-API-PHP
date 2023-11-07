@@ -15,24 +15,24 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //Decodifica la query que manda NextJS
-        $JsonQuery = json_decode(file_get_contents("php://input"));
+        $JsonQuery = json_decode(file_get_contents("php://input"), true);
 
         //Verifica que la query este dentro de la query disponibles
-        if( !in_array($JsonQuery->query, $queryTypes) ) return errorResponse("La query no se encuentra entre los tipos de query validos");
+        if( !in_array($JsonQuery["query"], $queryTypes) ) return errorResponse("La query no se encuentra entre los tipos de query validos");
         
         //Lee el tipo de query
-        switch ($JsonQuery->query) {
+        switch ($JsonQuery["query"]) {
             case 'registerUser':
-                $credentials = $JsonQuery->credentials;
+                $credentials = $JsonQuery["credentials"];
 
                 $response = handleInsertion(array(
                     "table" => "usuario",
                     "type" => "registry",
-                    "data" => $credentials
+                    "data" => json_decode($credentials)
                 ));
                 break;
             case 'loginUser':
-                $credentials = $JsonQuery->credentials;
+                $credentials = $JsonQuery["credentials"];
                 
                 $response = verifyPassword(array(
                     "table" => "usuario",
@@ -41,8 +41,8 @@
                 ));
                 break;
             case 'uploadTemplate':
-                $id = $JsonQuery->organization;
-                $template = $JsonQuery->template;
+                $id = $$JsonQuery["organization"];
+                $template = $JsonQuery["template"];
 
                 $response = handleUpdate(array(
                     "table" => "organizacion",
@@ -55,7 +55,7 @@
                 ));
                 break;
             case 'getTemplate':
-                $id = $JsonQuery->organization;
+                $id = $$JsonQuery["organization"];
                 
                 $data = handleSelection(array(
                     "table" => "organizacion",
@@ -72,10 +72,10 @@
 
                 break;
             case 'getUser':
-                $userType = $JsonQuery->userType;
-                $select = $JsonQuery->select ?? "";
-                $where = $JsonQuery->where ?? "";
-                $limit = $JsonQuery->limit ?? "";
+                $userType = $JsonQuery["userType"];
+                $select = $JsonQuery["select"] ?? "";
+                $where = $JsonQuery["where"] ?? "";
+                $limit = $JsonQuery["limit"] ?? "";
 
                 $data = handleSelection(array(
                     "table" => $userType,
@@ -83,6 +83,11 @@
                     "where" => $where,
                     "limit" => $limit
                 ));
+
+                $response = array(
+                    "result" => "success",
+                    "data" => $data
+                );
                 
                 break;
             default:

@@ -1,6 +1,6 @@
 <?php
-/*require_once("queries.php"); // Reemplaza "tu_archivo.php" con el nombre de tu archivo que contiene las funciones
-
+require_once("queries.php"); // Reemplaza "tu_archivo.php" con el nombre de tu archivo que contiene las funciones
+/*
 // Prueba de handleInsertion
 $jsonInsert = '{
     "table": "Usuario",
@@ -61,7 +61,7 @@ if (handleDelete($jsonDelete)) {
     echo "Prueba de eliminación FALLIDA.\n";
 }*/
 
-require("./queries.php");
+/*require("./queries.php");
 
 $dic = array(
     "table" => "organizacion",
@@ -97,24 +97,23 @@ $var = json_decode($result[0]["template"]);
 
 echo "<br><br>";
 print_r($var->columna1);
-echo "<br><br>";
+echo "<br><br>";*/
 
 $dic = array(
     "table" => "usuario",
     "select" => array("id"),
     "where" => array(
-        "id" => 4,
-        "correo" => "hoa"
+        "nombres" => "nestor"
     )
 );
 
-/*$result = handleSelection($dic);
+$result = handleSelection($dic);
 
+echo "<br><br> Resultado:";
+print_r($result);
 echo "<br><br>";
-print_r($result[0]);
-echo "<br><br>";*/
 
-$sql = "WHERE ";
+/*$sql = "WHERE ";
 foreach ($dic["where"] as $key => $value) {
     if(is_string($value)){
         $sql = $sql."$key = '$value'";
@@ -126,7 +125,7 @@ foreach ($dic["where"] as $key => $value) {
     }
 }
 
-echo $sql;
+echo $sql;*/
 
 
 ?>

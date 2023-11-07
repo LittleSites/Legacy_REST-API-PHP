@@ -55,11 +55,23 @@ function handleSelection($json) {
 
     $selectedColumns = implode(", ", $dataArray);//get the columns
     $sql = "SELECT DISTINCT $selectedColumns FROM $tableName";//get the values
-    if (!empty($where)) $sql = $sql." WHERE $whereClause";//if there is a where clause
+    
+    if($where != ""){
+        $sql = $sql." WHERE ";
+        foreach ($where as $key => $value) {
+            if(is_string($value)){
+                $sql = $sql."$key = '$value'";
+            }else{
+                $sql = $sql."$key = $value";
+            }
+            if($key != array_key_last($where)){
+                $sql = $sql." AND ";
+            }
+        }
+    }
     if (!empty($limit)) $sql = $sql." LIMIT $limit";//if there is a limit clause
+    
     $result = exeQuery($sql);
-
-    printf($sql);
 
     return mysqli_fetch_all($result, MYSQLI_ASSOC);//get the rows as an associative array
 }

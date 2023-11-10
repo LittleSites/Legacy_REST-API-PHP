@@ -23,10 +23,11 @@
         //Lee el tipo de query
         switch ($JsonQuery["query"]) {
             case 'registerUser':
+                $userType = $JsonQuery["userType"];
                 $credentials = $JsonQuery["credentials"];
 
                 $response = handleInsertion(array(
-                    "table" => "usuario",
+                    "table" => $userType,
                     "type" => "registry",
                     "data" => $credentials
                 ));

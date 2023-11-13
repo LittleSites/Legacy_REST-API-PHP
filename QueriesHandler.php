@@ -1,12 +1,12 @@
 <?php
-require_once("connect.php");
+require_once("DbConnection.php");
 
 function handleInsertion($json) {
     $dataArray = $json['data'];
     $tableName = $json['table'];
 
     // Verificar si se está realizando un registro y si existe el correo
-    if ($json['type'] === 'registry' && isset($dataArray['correo'])) {
+    if (isset($json['type']) && $json['type'] === 'registry' && isset($dataArray['correo'])) {
         $correo = $dataArray['correo'];
         $checkQuery = "SELECT COUNT(*) as count FROM $tableName WHERE correo = '$correo'";
         $result = exeQuery($checkQuery);

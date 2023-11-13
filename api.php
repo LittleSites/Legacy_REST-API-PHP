@@ -1,9 +1,10 @@
 <?php
-    require("cors.php");
-    require("queries.php");
+    require("PhpHeadersModifier.php");
+    require("QueriesHandler.php");
+    require("SessionManager.php");
 
     //Activacion de request POST de otros dominios
-    cors();
+    modifyHeaders();
 
     $queryTypes = array(
         "getUser",
@@ -25,12 +26,14 @@
             case 'registerUser':
                 $userType = $JsonQuery["userType"];
                 $credentials = $JsonQuery["credentials"];
+                $userType = $JsonQuery["userType"];
 
                 $response = handleInsertion(array(
                     "table" => $userType,
                     "type" => "registry",
                     "data" => $credentials
                 ));
+
                 break;
             case 'loginUser':
                 $credentials = $JsonQuery["credentials"];
@@ -40,23 +43,23 @@
                     "correo" => $credentials["correo"],
                     "contrasena" => $credentials["contrasena"]
                 ));
-                break;
-            case 'uploadTemplate':
-                $id = $$JsonQuery["organization"];
-                $template = $JsonQuery["template"];
 
-                $response = handleUpdate(array(
-                    "table" => "organizacion",
-                    "data" => array(
-                        "template" => json_encode($template)
-                    ),
-                    "where" => array(
-                        "id" => $id
-                    )
-                ));
+                if($response['result'] === 'success'){
+                    $userId = handleSelection(array(
+                        "table" => "usuario",
+                        "select" => array("id"),
+                        "where" => array(
+                            "correo" => $credentials['correo']
+                        )
+                    ))[0]['id'];
+
+                    $response['session'] = createUserSession($userId);
+                    $response['userId'] = $userId;
+                }
+
                 break;
             case 'getTemplate':
-                $id = $$JsonQuery["organization"];
+                $id = $JsonQuery["organization"];
                 
                 $data = handleSelection(array(
                     "table" => "organizacion",
@@ -90,6 +93,11 @@
                     "data" => $data
                 );
                 
+                break;
+            case 'verifyUserSession':
+
+                $response = verifyUserSession($JsonQuery['session']);
+
                 break;
             default:
                 return errorResponse("La query no se encuentra entre los tipos de query validas ERROR-2");

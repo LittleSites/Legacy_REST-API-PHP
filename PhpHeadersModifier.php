@@ -1,5 +1,5 @@
 <?php 
-    function cors() {
+    function modifyHeaders() {
         // Allow from any origin
         if (isset($_SERVER['HTTP_ORIGIN'])) {
             header("Access-Control-Allow-Origin: *");

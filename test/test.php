@@ -1,5 +1,5 @@
 <?php
-require_once("queries.php"); // Reemplaza "tu_archivo.php" con el nombre de tu archivo que contiene las funciones
+require_once("../QueriesHandler.php"); // Reemplaza "tu_archivo.php" con el nombre de tu archivo que contiene las funciones
 /*
 // Prueba de handleInsertion
 $jsonInsert = '{
@@ -97,17 +97,26 @@ $var = json_decode($result[0]["template"]);
 
 echo "<br><br>";
 print_r($var->columna1);
-echo "<br><br>";*/
+echo "<br><br>";
+
+$template = array(
+    "component1" => "valor1",
+    "component2" => "valor2",
+    "component3" => "valor3",
+    "component4" => "valor4",
+);
 
 $dic = array(
-    "table" => "usuario",
-    "select" => array("id"),
+    "table" => "organizacion",
+    "data" => array(
+        "template" => json_encode($template)
+    ),
     "where" => array(
-        "nombres" => "nestor"
+        "id" => 1
     )
 );
 
-$result = handleSelection($dic);
+$result = handleUpdate($dic);
 
 echo "<br><br> Resultado:";
 print_r($result);
@@ -126,6 +135,28 @@ foreach ($dic["where"] as $key => $value) {
 }
 
 echo $sql;*/
+
+// Function to get the client IP address
+function get_client_ip() {
+    $ipaddress = '';
+    if (getenv('HTTP_CLIENT_IP'))
+        $ipaddress = getenv('HTTP_CLIENT_IP');
+    else if(getenv('HTTP_X_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+    else if(getenv('HTTP_X_FORWARDED'))
+        $ipaddress = getenv('HTTP_X_FORWARDED');
+    else if(getenv('HTTP_FORWARDED_FOR'))
+        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+    else if(getenv('HTTP_FORWARDED'))
+       $ipaddress = getenv('HTTP_FORWARDED');
+    else if(getenv('REMOTE_ADDR'))
+        $ipaddress = getenv('REMOTE_ADDR');
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+}
+
+echo get_client_ip();
 
 
 ?>

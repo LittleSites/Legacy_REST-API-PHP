@@ -11,7 +11,8 @@
         "getTemplate",
         "uploadTemplate",
         "loginUser",
-        "registerUser"
+        "registerUser",
+        "verifyUserSession"
     );
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -96,7 +97,9 @@
                 break;
             case 'verifyUserSession':
 
-                $response = verifyUserSession($JsonQuery['session']);
+                $response = array(
+                    "result" => verifyUserSession($JsonQuery['session'])
+                );
 
                 break;
             default:

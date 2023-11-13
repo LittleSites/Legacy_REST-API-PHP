@@ -31,8 +31,6 @@
     }
 
     function verifyUserSession($session){
-        if(!sessionExistInDatabase($session['sessionId'], $session['tooken'])) return false;
-
         $result = handleSelection(array(
             "table" => "sessions",
             "select" => array("userAgent", "userId"),
@@ -43,11 +41,9 @@
         ));
 
         return(
-            $session['sessionId'] === $result[0]['sessionId'] &&
-            $session['tooken'] === $result[0]['tooken'] &&
             $_SERVER['HTTP_USER_AGENT'] === $result[0]['userAgent'] &&
             $session['userId'] === $result[0]['userId']
-        )
+        );
     }
 
     function sessionExistInDatabase($sessionId, $tooken){

@@ -156,7 +156,34 @@ function get_client_ip() {
     return $ipaddress;
 }
 
-echo get_client_ip();
+//echo get_client_ip();
 
+$query = array(
+    "table" => "usuario",
+    "data" => array(
+        "nombres" => "hola"
+    ),
+    "where" => array(
+        "id" => 12
+    )
+    );
+
+$where = $query['where'];
+
+    if($where != ""){
+        $sql = $sql." WHERE ";
+        foreach ($where as $key => $value) {
+            if(is_string($value)){
+                $sql = $sql."$key = '$value'";
+            }else{
+                $sql = $sql."$key = $value";
+            }
+            if($key != array_key_last($where)){
+                $sql = $sql." AND ";
+            }
+        }
+    }
+
+echo $sql;
 
 ?>

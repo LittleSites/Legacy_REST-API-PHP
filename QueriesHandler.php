@@ -51,8 +51,6 @@ function handleSelection($json) {
     $where = $json['where'] ?? '';
     $limit = $json['limit'] ?? '';
 
-    $whereClause = (is_array($where)) ? implode(' AND ', $where) : $where;//if the where condition is an array, implode it with 'AND's
-
     $selectedColumns = implode(", ", $dataArray);//get the columns
     $sql = "SELECT DISTINCT $selectedColumns FROM $tableName";//get the values
     
@@ -118,9 +116,21 @@ function handleUpdate($json) {
     }
     $setClause = implode(", ", $updateColumns);//separate the columns and values with a comma
 
-    $whereClause = (is_array($where)) ? implode(' AND ', $where) : $where;//if the where condition is an array, implode it with 'AND'
+    $sql = "UPDATE $tableName SET $setClause";//create the sql query
 
-    $sql = "UPDATE $tableName SET $setClause WHERE $whereClause";//create the sql query
+    if($where != ""){
+        $sql = $sql." WHERE ";
+        foreach ($where as $key => $value) {
+            if(is_string($value)){
+                $sql = $sql."$key = '$value'";
+            }else{
+                $sql = $sql."$key = $value";
+            }
+            if($key != array_key_last($where)){
+                $sql = $sql." AND ";
+            }
+        }
+    }
 
     if(exeQuery($sql)){
         return array(

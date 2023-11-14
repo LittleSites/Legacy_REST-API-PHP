@@ -12,7 +12,8 @@
         "uploadTemplate",
         "loginUser",
         "registerUser",
-        "verifyUserSession"
+        "verifyUserSession",
+        "getUserOrganizations"
     );
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -94,6 +95,22 @@
                     "data" => $data
                 );
                 
+                break;
+            case 'getUserOrganizations':
+                $where = $JsonQuery["where"] ?? "";
+
+                $data = handleSelection(array(
+                    "table" => "organizacion",
+                    "select" => array('nombre_organizacion'),
+                    "where" => array(
+                        "responsable" => $JsonQuery['userId']
+                    ),
+                ));
+
+                $response = array(
+                    "result" => "success",
+                    "data" => $data
+                );
                 break;
             case 'verifyUserSession':
 

@@ -12,11 +12,11 @@ $mediaUrls = [];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener el userID y el número de fotos
-    $userId = $_POST["userId"];
+    $orgId = $_POST["orgId"];
     $numberOfPhotos = $_POST["numberOfPhotos"];
 
     // Directorio donde se guardarán las fotos
-    $uploadDir = "media/images/template/$userId/";
+    $uploadDir = "media/images/template/$orgId/";
 
     // Crear directorio si no existe
     if (!file_exists($uploadDir)) {
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (strpos($key, "contactUrl") !== false) {
             // Agregar la clave y el valor al diccionario de contactUrls
             $contactUrls[$key] = $value;
-        } elseif (strpos($key, "media") !== false || $key === "userId" || $key === "numberOfPhotos" || $key === "templateId") {
+        } elseif (strpos($key, "media") !== false || $key === "orgId" || $key === "numberOfPhotos" || $key === "templateId") {
             // La información de la imagen ya se agregó en el bucle anterior
         } else {
             // Agregar la clave y el valor al diccionario de templateComponents
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ))
         ),
         "where" => array(
-            "id" => 1
+            "id" => $orgId
         )
     );
     

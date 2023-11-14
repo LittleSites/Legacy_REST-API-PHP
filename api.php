@@ -97,11 +97,10 @@
                 
                 break;
             case 'getUserOrganizations':
-                $where = $JsonQuery["where"] ?? "";
 
                 $data = handleSelection(array(
                     "table" => "organizacion",
-                    "select" => array('nombre_organizacion'),
+                    "select" => array('id', 'nombre_organizacion'),
                     "where" => array(
                         "responsable" => $JsonQuery['userId']
                     ),

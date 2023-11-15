@@ -29,13 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         move_uploaded_file($_FILES[$inputName]['tmp_name'], $filePath);
 
         // Agregar la clave y el valor al diccionario de mediaUrls
-        $mediaUrls[$inputName] = "http://localhost:80/api/" . $uploadDir . $fileName;
+        $mediaUrl = "http://localhost:80/api/" . $uploadDir . $fileName;
     }
 
     $dic = array(
         "table" => "organizacion",
         "data" => array(
-            "img" => $filePath
+            "img" => $mediaUrl
         ),
         "where" => array(
             "responsable" => $orgId,
